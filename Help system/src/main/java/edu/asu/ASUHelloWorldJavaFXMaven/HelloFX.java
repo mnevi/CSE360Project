@@ -1,6 +1,7 @@
 package edu.asu.ASUHelloWorldJavaFXMaven;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -40,7 +41,10 @@ public class HelloFX extends Application {
     	CheckBox c1=new CheckBox("Admin");
     	CheckBox c2=new CheckBox("Instructor");
     	CheckBox c3=new CheckBox("Student");
+    	
     	Button btn = new Button("Admin Signup");
+    	
+    	
     	root.getChildren().add(l1);
     	root.getChildren().add(t1);
     	root.getChildren().add(l2);
@@ -52,14 +56,19 @@ public class HelloFX extends Application {
     	root.getChildren().add(c3);
     	root.getChildren().add(btn);
     	root.getChildren().add(l4);
-    	
+    	c1.setSelected(true);
+    	c1.setDisable(true);
     	btn.setOnAction(new EventHandler<>() {
             public void handle(ActionEvent event) {
-            	String roles = rolehelper(c1.isSelected(),c2.isSelected(),c3.isSelected());
+            	char[] passwordChars = t2.getText().toCharArray();
+            	String pass="";
+            	for(char c:passwordChars)
+            		pass+=c;
+            	String roles = rolehelper(true,c2.isSelected(),c3.isSelected());
             	if(t2.getText().equals(t3.getText()))
             	{
             	try {
-					helper.setupAdministrator(t1.getText(),t2.getText(),roles);
+					helper.setupAdministrator(t1.getText(),pass,roles);
 					userLogin(root,helper);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -71,6 +80,8 @@ public class HelloFX extends Application {
             		
             }
         });
+    	
+    	
     	
     }
     
@@ -84,6 +95,7 @@ public class HelloFX extends Application {
     	Button btn = new Button("Log In");
     	Button btn2 = new Button("Sign Up");
     	Label l3=new Label("");
+    	
     	root.getChildren().add(l1);
     	root.getChildren().add(t1);
     	root.getChildren().add(l2);
@@ -93,9 +105,14 @@ public class HelloFX extends Application {
     	root.getChildren().add(btn2);
     	root.getChildren().add(l3);
     	btn.setOnAction(new EventHandler<>() {
+    		
             public void handle(ActionEvent event) {
+            	char[] passwordChars = t2.getText().toCharArray();
+            	String pass="";
+            	for(char c:passwordChars)
+            		pass+=c;
             	String role="";
-            	if(helper.login(t1.getText(),t2.getText())) {
+            	if(helper.login(t1.getText(),pass)) {
             		try {
 						if(helper.findaccess(t1.getText()))
 						{
@@ -110,11 +127,11 @@ public class HelloFX extends Application {
 					}
             	} else
 					try {
-						if(helper.checktemp(t2.getText()))
+						if(helper.checktemp(pass))
 						{
 							
 							{
-								helper.updateuser(t1.getText(), t2.getText());
+								helper.updateuser(t1.getText(), pass);
 								adminhelper.permpassword(t1.getText());
 							}
 						}
@@ -180,7 +197,7 @@ public class HelloFX extends Application {
     	Label l3=new Label("Confirm Password");
     	Label l4=new Label("");
     	TextField t3=new TextField();
-   
+    	
     	
     	root.getChildren().add(l1);
     	root.getChildren().add(t1);
@@ -201,10 +218,22 @@ public class HelloFX extends Application {
         root.getChildren().add(l4);
         btn.setOnAction(new EventHandler<>() {
             public void handle(ActionEvent event) {
-            	if(t2.getText().equals(t3.getText())) 
+            	String s="";
+            	char[] passwordChars = t2.getText().toCharArray();
+            	for(char c:passwordChars)
+            		s+=c;
+            	String s1="";
+            	char[] passwordChar = t3.getText().toCharArray();
+            	for(char c:passwordChar)
+            		s1+=c;
+        		System.out.println(s);
+        		System.out.println(s1);
+            	if(s.equals(s1)) 
             	{
+            		
+            		
             	try {
-					if(helper.checktemp(t2.getText()))
+					if(helper.checktemp(s))
 					{
 						if(helper.checkuser(t1.getText()))
 						{
@@ -212,7 +241,7 @@ public class HelloFX extends Application {
 						}
 						else
 						{
-							helper.updateuser(t1.getText(), t2.getText());
+							helper.updateuser(t1.getText(), s);
 							adminhelper.permpassword(t1.getText());
 						}
 					}

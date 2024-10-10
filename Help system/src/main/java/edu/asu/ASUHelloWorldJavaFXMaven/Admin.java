@@ -76,7 +76,10 @@ public class Admin extends Application{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		Label l11=new Label("Admin");
 		CheckBox c1=new CheckBox();
+		Label l2=new Label("Instructor");
+		Label l3=new Label("Student");
 		CheckBox c2=new CheckBox();
 		CheckBox c3=new CheckBox();
 		Button submit=new Button("Submit");
@@ -120,8 +123,11 @@ public class Admin extends Application{
         
     }
 		v.getChildren().add(l1);
+		v.getChildren().add(l11);
 		v.getChildren().add(c1);
+		v.getChildren().add(l2);
 		v.getChildren().add(c2);
+		v.getChildren().add(l3);
 		v.getChildren().add(c3);
 		v.getChildren().add(submit);
 		root.setCenter(v);
