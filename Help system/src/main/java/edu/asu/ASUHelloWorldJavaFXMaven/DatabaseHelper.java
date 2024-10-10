@@ -11,7 +11,7 @@ class DatabaseHelper {
 
 	// JDBC driver name and database URL 
 	static final String JDBC_DRIVER = "org.h2.Driver";   
-	static final String DB_URL = "jdbc:h2:~/first";  
+	static final String DB_URL = "jdbc:h2:~/firs";  
 
 	//  Database credentials 
 	static final String USER = "sa"; 
@@ -44,7 +44,9 @@ class DatabaseHelper {
 				+ "middle VARCHAR(255), "
 				+ "last VARCHAR(255), "
 				+ "preferred VARCHAR(255), "
-				+ "USERNAME VARCHAR(255))";
+				+ "USERNAME VARCHAR(255), "
+				+ "temp VARCHAR(255), "
+				+ "date VARCHAR(255))";
 				
 		statement.execute(userTable);
 	}
@@ -106,6 +108,19 @@ class DatabaseHelper {
 			pstmt.executeUpdate();
 		}
 	}
+	public void invitedata(String role, String temp,String date) throws SQLException {
+		String insertUser = "INSERT INTO cse360users (role, temp, date) VALUES (?, ?, ?)";
+		try (PreparedStatement pstmt = connection.prepareStatement(insertUser)) {
+			
+			
+			pstmt.setString(1, role);
+			pstmt.setString(2, temp);
+			pstmt.setString(3, date);
+			
+			pstmt.executeUpdate();
+			System.out.println("In the system");
+		}
+	}
 	public void update(String email, String first, String middle, String last, String preferred, String username) throws SQLException {
 	    String updateUser = "UPDATE cse360users SET email = ?, first = ?, middle = ?, last = ?, preferred = ?, access = true WHERE username = ?";
 	    try (PreparedStatement pstmt = connection.prepareStatement(updateUser)) {
@@ -118,6 +133,39 @@ class DatabaseHelper {
 	        
 	        pstmt.executeUpdate();
 	    }
+	}
+	public void updateuser(String username,String temp) throws SQLException {
+	    String updateUser = "UPDATE cse360users SET username = ?, temp = null WHERE temp = ?";
+	    try (PreparedStatement pstmt = connection.prepareStatement(updateUser)) {
+	        pstmt.setString(2, temp);
+
+	        pstmt.setString(1, username);
+	        
+	        pstmt.executeUpdate();
+	    }
+	    System.out.println("updated username");
+	}
+	public void resetuser(String username,String temp,String date) throws SQLException {
+	    String updateUser = "UPDATE cse360users SET password = null, temp = ?, date = ? WHERE username = ?";
+	    try (PreparedStatement pstmt = connection.prepareStatement(updateUser)) {
+	        pstmt.setString(2, date);
+	        pstmt.setString(3, username);
+	        pstmt.setString(1, temp);
+	        
+	        pstmt.executeUpdate();
+	    }
+	    System.out.println("reset username successful");
+	}
+	public void updatepass(String password,String username) throws SQLException {
+	    String updateUser = "UPDATE cse360users SET password = ? WHERE USERNAME= ?";
+	    try (PreparedStatement pstmt = connection.prepareStatement(updateUser)) {
+	        pstmt.setString(1, password);
+
+	        pstmt.setString(2, username);
+	        
+	        pstmt.executeUpdate();
+	    }
+	    System.out.println("updated password");
 	}
 	public void setrole(String role,String username) throws SQLException {
 	    String updateUser = "UPDATE cse360users SET role = ? WHERE username = ?";
@@ -135,6 +183,16 @@ class DatabaseHelper {
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 			pstmt.setString(1, username);
 			pstmt.setString(2, password);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				return rs.next();
+			}
+		}
+	}
+	public boolean helptemp(String temp) throws SQLException {
+		String query = "SELECT temp FROM cse360users WHERE temp = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, temp);
+
 			try (ResultSet rs = pstmt.executeQuery()) {
 				return rs.next();
 			}
@@ -202,14 +260,15 @@ class DatabaseHelper {
 
 		while(rs.next()) { 
 			// Retrieve by column name 
-			int id  = rs.getInt("id"); 
+			
 			String roles="";
 			String  username = rs.getString("username"); 
 			String role = rs.getString("role");  
 			String  email = rs.getString("email");  
 			String first = rs.getString("first");  
 			String  middle = rs.getString("middle"); 
-			String last = rs.getString("last"); 		
+			String last = rs.getString("last"); 
+			String exp = rs.getString("date"); 
 			switch(role) {
 			case "111":
 		           roles="Admin, Instructor and Student"; 
@@ -239,7 +298,8 @@ class DatabaseHelper {
 					+"Middle Name: "+middle+"\n"
 					+"Last Name: "+last+"\n"
 					+"Roles: "+roles+"\n"
-					+"Email: "+email+"\n";
+					+"Email: "+email+"\n"
+					+"Expiration: "+exp+"\n";
 			
 			 
 		} 
@@ -251,6 +311,18 @@ class DatabaseHelper {
 try (PreparedStatement pstmt = connection.prepareStatement(deleteQuery)) {
 			
 			pstmt.setString(1, username);
+			
+			
+			pstmt.executeUpdate();
+		}
+	    System.out.println("User have been deleted.");
+		
+		
+		} 
+	public void deleteall() throws SQLException{
+		String deleteQuery = "DELETE FROM cse360users";
+try (PreparedStatement pstmt = connection.prepareStatement(deleteQuery)) {
+			
 			
 			
 			pstmt.executeUpdate();

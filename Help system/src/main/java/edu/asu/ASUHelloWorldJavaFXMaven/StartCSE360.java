@@ -71,6 +71,36 @@ public void delete(String username) throws SQLException {
 	System.out.println("Delete complete");
 
 }
+public void deleteall() throws SQLException {
+	
+	
+	databaseHelper.deleteall();
+	System.out.println("Delete complete");
+
+}
+public boolean checktemp(String temp) throws SQLException {
+	
+	
+	return databaseHelper.helptemp(temp);
+	
+
+}
+public void updatepass(String password,String username) throws SQLException {
+	
+	
+	databaseHelper.updatepass(password,username);
+	
+
+}
+public void updateuser(String username, String temp) throws SQLException {
+	
+	
+	databaseHelper.updateuser(username,temp);
+	
+
+}
+
+
 public boolean findaccess(String username) throws SQLException {
 	return databaseHelper.access(username);
 }
@@ -100,13 +130,20 @@ public void execute(String email, String first,String middle, String last, Strin
 		return false;
 		
 	}
+	
+	public void inviteroles(String roles,String s,String date) throws SQLException {
+		databaseHelper.invitedata(roles,s,date);
+	}
+	
 	public String show() throws SQLException {
 		return databaseHelper.displayUsers();
 	}
 	public void setrole(String role,String username) throws SQLException {
 		databaseHelper.setrole(role,username);
 	}
-	
+	public void resetuser(String username,String s,String date) throws SQLException {
+		 databaseHelper.resetuser(username,s,date);
+	}
 
 	
 

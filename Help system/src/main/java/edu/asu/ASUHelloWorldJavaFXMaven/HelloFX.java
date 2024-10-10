@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 public class HelloFX extends Application {
 	roles roles=new roles();
 	StartCSE360 helper=new StartCSE360();
+	Admin adminhelper=new Admin();
 	
     public void start(Stage primaryStage) throws SQLException {
     	VBox root = new VBox();
@@ -107,9 +108,22 @@ public class HelloFX extends Application {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-            	}
-            	else
-            		l3.setText("Invalid username or password");
+            	} else
+					try {
+						if(helper.checktemp(t2.getText()))
+						{
+							
+							{
+								helper.updateuser(t1.getText(), t2.getText());
+								adminhelper.permpassword(t1.getText());
+							}
+						}
+						else
+						l3.setText("Invalid username or password");
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
             }
         });
     	
@@ -166,9 +180,7 @@ public class HelloFX extends Application {
     	Label l3=new Label("Confirm Password");
     	Label l4=new Label("");
     	TextField t3=new TextField();
-    	CheckBox c1=new CheckBox("Admin");
-    	CheckBox c2=new CheckBox("Instructor");
-    	CheckBox c3=new CheckBox("Student");
+   
     	
     	root.getChildren().add(l1);
     	root.getChildren().add(t1);
@@ -176,9 +188,7 @@ public class HelloFX extends Application {
     	root.getChildren().add(t2);
     	root.getChildren().add(l3);
     	root.getChildren().add(t3);
-    	root.getChildren().add(c1);
-    	root.getChildren().add(c2);
-    	root.getChildren().add(c3);
+  
     	Button btn = new Button();
     	Button btn2 = new Button();
     	Button btn3 = new Button("Back");
@@ -191,16 +201,23 @@ public class HelloFX extends Application {
         root.getChildren().add(l4);
         btn.setOnAction(new EventHandler<>() {
             public void handle(ActionEvent event) {
-            	String role=rolehelper(c1.isSelected(),c2.isSelected(),c3.isSelected());
-            	if(t2.getText().equals(t3.getText())) {
+            	if(t2.getText().equals(t3.getText())) 
+            	{
             	try {
-					if(helper.checkuser(t1.getText())) {
-						l4.setText("User already exists!");
+					if(helper.checktemp(t2.getText()))
+					{
+						if(helper.checkuser(t1.getText()))
+						{
+							l4.setText("User already in the system");
+						}
+						else
+						{
+							helper.updateuser(t1.getText(), t2.getText());
+							adminhelper.permpassword(t1.getText());
+						}
 					}
-					else {
-						helper.userSetUp(t1.getText(), t2.getText(),role);
-						userLogin(root,helper);
-					}
+					else
+						l4.setText("Invalid Password");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -214,7 +231,7 @@ public class HelloFX extends Application {
         btn2.setOnAction(new EventHandler<>() {
             public void handle(ActionEvent event) {
             	try {
-					helper.delete(l1.getText());
+					helper.deleteall();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

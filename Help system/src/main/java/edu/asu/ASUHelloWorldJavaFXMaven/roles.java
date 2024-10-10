@@ -1,12 +1,15 @@
 package edu.asu.ASUHelloWorldJavaFXMaven;
 
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Random;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -54,6 +57,7 @@ public class roles extends Application{
 	
 	
 	public void all(Stage primaryStage) {
+		
 		VBox v=new VBox();
 		Label lb=new Label("Please select a role to continue");
 		Button b1=new Button("Admin");
@@ -80,6 +84,11 @@ public class roles extends Application{
 		b3.setOnAction(new EventHandler<>() {
             public void handle(ActionEvent event) {
             	student(primaryStage);
+            }
+        });
+		b.setOnAction(new EventHandler<>() {
+            public void handle(ActionEvent event) {
+            	primaryStage.close();
             }
         });
 		
@@ -135,6 +144,7 @@ public class roles extends Application{
 	public void admin(Stage primaryStage) {
 		VBox v = new VBox();
 		Label ll=new Label("");
+		Label l3=new Label("");
 		ScrollPane s=new ScrollPane(ll);
 		s.setPrefSize(300, 150);
 		s.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);  
@@ -144,14 +154,18 @@ public class roles extends Application{
 		Button delete=new Button("Delete A User");
 		Button list=new Button("List all Users");
 		Button removeroles=new Button("Remove roles of users");
+		Button invite=new Button("Invite Users");
 		Button b=new Button("Log out");
+		Button reset=new Button("Reset A user");
 		
 		v.getChildren().add(lb);
-		
+		v.getChildren().add(invite);
 		v.getChildren().add(delete);
 		v.getChildren().add(t1);
 		v.getChildren().add(list);
 		v.getChildren().add(removeroles);
+		v.getChildren().add(reset);
+		v.getChildren().add(l3);
 		
 		cp.setCenter(v);
 		cp.setRight(b);
@@ -163,8 +177,15 @@ public class roles extends Application{
             	{
             		
             	try {
-					helper.delete(t1.getText());
-					ll.setText("User has been deleted");
+            		Alert alert = new Alert(AlertType.CONFIRMATION);
+            		alert.setTitle("Confirmation Dialog");
+                    alert.setHeaderText("Are you sure?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                    	helper.delete(t1.getText());
+    					ll.setText("User has been deleted");
+                    } 
+					
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -199,12 +220,27 @@ public class roles extends Application{
             	adminhelper.removeroles();
             }
         });
+		invite.setOnAction(new EventHandler<>() { 
+            public void handle(ActionEvent event) {
+            	System.out.println("HERE");
+            	adminhelper.inviteuser();
+                 
+            }
+        });
+		reset.setOnAction(new EventHandler<>() { 
+            public void handle(ActionEvent event) {
+            	adminhelper.resetuser();
+            }
+        });
 	}
 	
 	public void logout(Stage primaryStage)
 	{
 		primaryStage.close();
 	}
+	
+	
+	    
 	
 	public void instructorstudent(Stage primaryStage) {
 		Label lb=new Label("Please select a role to continue");
