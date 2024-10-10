@@ -12,14 +12,27 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
+/*******
+ * <p> roles Class </p>
+ * 
+ * <p> Description: This class handles the roles that the person has </p>
+ * 
+ * 
+ * @author Tushar Sachan, Max Neville, Taj Yoshimura, Alan Lintemuth, William McLean
+ * 
+ * @version 1.0		Development Phase 1 (User authrorization)
+ * 
+ */
 public class roles extends Application{
 	BorderPane cp=new BorderPane();
 	String roleuser="";
 	StartCSE360 helper = new StartCSE360();
 	Admin adminhelper=new Admin();
 	
-	
+	/**********
+	 * This is the start method that is called once the application has been loaded into memory and
+	 * is ready to get to work. This also calls necessary functions according to roles
+	 */
 	public void start(Stage primaryStage) {
 		BorderPane root=new BorderPane();
 		
@@ -51,11 +64,16 @@ public class roles extends Application{
 		primaryStage.setScene(new Scene(root,400,250));
 		primaryStage.show();
 	}
+	/**********
+	 * This sets the role of the private data member
+	 */
 	public void setrole(String role) {
 		this.roleuser=role;
 	}
 	
-	
+	/**********
+	 * This function handles if a user has all access
+	 */
 	public void all(Stage primaryStage) {
 		
 		VBox v=new VBox();
@@ -93,7 +111,9 @@ public class roles extends Application{
         });
 		
 	}
-	
+	/**********
+	 * This function handles if the user has admin and instructor as roles
+	 */
 	public void admininstructor(Stage primaryStage) {
 		VBox v=new VBox();
 		Label lb=new Label("Please select a role to continue");
@@ -116,6 +136,9 @@ public class roles extends Application{
             }
         });
 	}
+	/**********
+	 * This function handles if the user has admin and student
+	 */
 	
 	public void adminstudent(Stage primaryStage) {
 		VBox v=new VBox();
@@ -140,7 +163,9 @@ public class roles extends Application{
         });
 		
 	}
-	
+	/**********
+	 * This function handles if the user has admin
+	 */
 	public void admin(Stage primaryStage) {
 		VBox v = new VBox();
 		Label ll=new Label("");
@@ -241,7 +266,9 @@ public class roles extends Application{
 	
 	
 	    
-	
+	/**********
+	 * This function handles if the user has instructor and admin as roles
+	 */
 	public void instructorstudent(Stage primaryStage) {
 		Label lb=new Label("Please select a role to continue");
 		cp.getChildren().clear();
@@ -269,6 +296,9 @@ public class roles extends Application{
 		
 
 	}
+	/**********
+	 * This function handles if the user has instructor as roles
+	 */
 	public void instructor(Stage primaryStage) {
 		Label lb=new Label("Welcome to Instructor role");
 		Button b=new Button("Log out");
@@ -283,7 +313,9 @@ public class roles extends Application{
 		
 		
 	}
-	
+	/**********
+	 * This function handles if the user has student as roles
+	 */
 	public void student(Stage primaryStage) {
 		Label lb=new Label("Welcome to Student role");
 		Button b=new Button("Log out");

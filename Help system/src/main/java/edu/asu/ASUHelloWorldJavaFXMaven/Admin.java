@@ -1,6 +1,18 @@
 package edu.asu.ASUHelloWorldJavaFXMaven;
 
 import java.sql.SQLException;
+/*******
+ * <p> Admin Class </p>
+ * 
+ * <p> Description: This class handles the functions that admin does like changing,
+ * editing, adding roles and inviting people </p>
+ * 
+ * 
+ * @author Tushar Sachan, Max Neville, Taj Yoshimura, Alan Lintemuth, William McLean
+ * 
+ * @version 1.0		Development Phase 1 (User authrorization)
+ * 
+ */
 import java.util.Calendar;
 import java.util.Random;
 
@@ -18,12 +30,17 @@ public class Admin extends Application{
 	BorderPane root;
 	private String useradmin="";
 	
+	/**********
+	 * This is the start method that is called once the application has been loaded into memory and
+	 * is ready to get to work.
+	 */
 	public void start(Stage primaryStage) {
 		root.setPadding(new Insets(10, 10, 10, 10));
 		primaryStage.setScene(new Scene(root,400,250));
 		primaryStage.show();
 	}
 	
+	//This helps admin list all users and enable scroll
 	public void showusers() {
 		root=new BorderPane();
 		root.getChildren().clear();
@@ -35,9 +52,15 @@ public class Admin extends Application{
 	    scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 	    root.setCenter(scrollPane);
 	}
+	
+	//sets role of admin to the private datamember in roles class
 	public void setUsers(String user) {
 		useradmin=user;
 	}
+	
+	/**********
+	 * This function helps the user edit roles by asking for username as a prompt
+	 */
 	public void removeroles() {
 		VBox v=new VBox();
 		root=new BorderPane();
@@ -51,6 +74,7 @@ public class Admin extends Application{
 		v.getChildren().add(t1);
 		v.getChildren().add(submit);
 		root.setCenter(v);
+		//This button checks if the username is in the database and update their roles
 		submit.setOnAction(new EventHandler<>() { 
             public void handle(ActionEvent event) {
             	root.getChildren().clear();
@@ -65,6 +89,7 @@ public class Admin extends Application{
 		
 	}
 	
+	//This function uses removeroles to find right user and edit individual role permissions with checkbox
 	public void editroles(String username,BorderPane root) throws SQLException {
 		VBox v=new VBox();
 		String name=helper.prefname(username);
@@ -83,6 +108,7 @@ public class Admin extends Application{
 		CheckBox c2=new CheckBox();
 		CheckBox c3=new CheckBox();
 		Button submit=new Button("Submit");
+		//This switch helps display the right permissions that the user has
 		switch (role) {
         case "111":
         	c1.setSelected(true); 
@@ -131,6 +157,7 @@ public class Admin extends Application{
 		v.getChildren().add(c3);
 		v.getChildren().add(submit);
 		root.setCenter(v);
+		//this sends the confirmation back to database and update roles in the database
 		submit.setOnAction(new EventHandler<>() {
             public void handle(ActionEvent event) {
             	String newrole="";
@@ -147,6 +174,9 @@ public class Admin extends Application{
         });
 	}
 	
+	/**********
+	 * This function helps generate invite code and invite a user
+	 */
 	public void inviteuser() {
 		VBox v=new VBox();
 		root=new BorderPane();
@@ -173,6 +203,7 @@ public class Admin extends Application{
 		v.getChildren().add(l4);
 		v.getChildren().add(l5);
 		root.setCenter(v);
+		//button reaches the database and gets a one time password for new user registration
 		b.setOnAction(new EventHandler<>() { 
             public void handle(ActionEvent event) {
       
@@ -200,6 +231,9 @@ public class Admin extends Application{
 		
 		
 	}
+	/**********
+	 * This function generates a new temporary password and removes the current password of a user
+	 */
 	public void resetuser() {
 		VBox v=new VBox();
 		root=new BorderPane();
@@ -216,6 +250,7 @@ public class Admin extends Application{
 		v.getChildren().add(lf);
 		v.getChildren().add(l5);
 		root.setCenter(v);
+		//button finds the username and pushes the OTP to the database and resets password
 		submit.setOnAction(new EventHandler<>() { 
             public void handle(ActionEvent event) {
             	try {
@@ -235,6 +270,10 @@ public class Admin extends Application{
             }
         });
 	}
+	
+	/**********
+	 * This gets a expiration date two days in future and sets it to database
+	 */
 	public static String getExpirationDate() {
         Calendar expirationDate = Calendar.getInstance();                 //get expiration to the current date
         expirationDate.add(Calendar.DATE, 30);                             //add 30 days to the expiration date
@@ -246,6 +285,7 @@ public class Admin extends Application{
         return formattedDate;
     }
 	
+	//This function creates a new window and asks for setting a permanent password if the user logs in with OTP
 	public void permpassword(String username) {
 		VBox v=new VBox();
 		root=new BorderPane();
@@ -283,6 +323,10 @@ public class Admin extends Application{
             }
         });
 	}
+	
+	/**********
+	 * This function generates a OTP or temporary password for inviting the user
+	 */
 	public static char[] generateRandomCharArray() {
         Random random = new Random();
         char[] randomChars = new char[10];

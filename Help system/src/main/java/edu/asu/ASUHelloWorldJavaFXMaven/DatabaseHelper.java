@@ -1,6 +1,18 @@
 package edu.asu.ASUHelloWorldJavaFXMaven;
 import java.sql.*;
 
+/*******
+ * <p> DatabaseHelper Class </p>
+ * 
+ * <p> Description: This class creates a table and acts as front of the database </p>
+ * 
+ * 
+ * @author Tushar Sachan, Max Neville, Taj Yoshimura, Alan Lintemuth, William McLean
+ * 
+ * @version 1.0		Development Phase 1 (User authrorization)
+ * 
+ */
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -32,7 +44,10 @@ class DatabaseHelper {
 			System.err.println("JDBC Driver not found: " + e.getMessage());
 		}
 	}
-
+	
+	/**********
+	 * This function creates the table in database
+	 */
 	private void createTables() throws SQLException {
 		String userTable = "CREATE TABLE IF NOT EXISTS cse360users ("
 				+ "id INT AUTO_INCREMENT PRIMARY KEY, "
@@ -62,6 +77,9 @@ class DatabaseHelper {
 		return true;
 	}
 	
+	/**********
+	 * This function gets if the user is logging in for the first time
+	 */
 	public boolean access(String username) throws SQLException {
 	    String query = "SELECT access FROM cse360users WHERE username = ?";
 	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -79,6 +97,9 @@ class DatabaseHelper {
 	    return false;  // If no result is found
 	}
 		
+	/**********
+	 * This function gets role of a user 
+	 */
 	public String role(String username) throws SQLException {
 	    String query = "SELECT role FROM cse360users WHERE username = ?";
 	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -96,7 +117,9 @@ class DatabaseHelper {
 	    return "";  // If no result is found
 	}
 	
-
+	/**********
+	 * This function registers a new user with username, passeord and role
+	 */
 	public void register(String username, String password, String role) throws SQLException {
 		String insertUser = "INSERT INTO cse360users (password, role, username, access) VALUES (?, ?, ?, false)";
 		try (PreparedStatement pstmt = connection.prepareStatement(insertUser)) {
@@ -108,6 +131,9 @@ class DatabaseHelper {
 			pstmt.executeUpdate();
 		}
 	}
+	/**********
+	 * This function sets the temporary password along with expiration date
+	 */
 	public void invitedata(String role, String temp,String date) throws SQLException {
 		String insertUser = "INSERT INTO cse360users (role, temp, date) VALUES (?, ?, ?)";
 		try (PreparedStatement pstmt = connection.prepareStatement(insertUser)) {
@@ -121,6 +147,9 @@ class DatabaseHelper {
 			System.out.println("In the system");
 		}
 	}
+	/**********
+	 * This function updates the details when user logs in for the first time
+	 */
 	public void update(String email, String first, String middle, String last, String preferred, String username) throws SQLException {
 	    String updateUser = "UPDATE cse360users SET email = ?, first = ?, middle = ?, last = ?, preferred = ?, access = true WHERE username = ?";
 	    try (PreparedStatement pstmt = connection.prepareStatement(updateUser)) {
@@ -134,6 +163,9 @@ class DatabaseHelper {
 	        pstmt.executeUpdate();
 	    }
 	}
+	/**********
+	 * This functionupdates the user info
+	 */
 	public void updateuser(String username,String temp) throws SQLException {
 	    String updateUser = "UPDATE cse360users SET username = ?, temp = null WHERE temp = ?";
 	    try (PreparedStatement pstmt = connection.prepareStatement(updateUser)) {
@@ -145,6 +177,9 @@ class DatabaseHelper {
 	    }
 	    System.out.println("updated username");
 	}
+	/**********
+	 * This function resets the user info and remove password
+	 */
 	public void resetuser(String username,String temp,String date) throws SQLException {
 	    String updateUser = "UPDATE cse360users SET password = null, temp = ?, date = ? WHERE username = ?";
 	    try (PreparedStatement pstmt = connection.prepareStatement(updateUser)) {
@@ -156,6 +191,9 @@ class DatabaseHelper {
 	    }
 	    System.out.println("reset username successful");
 	}
+	/**********
+	 * This function updates the pass after OTP
+	 */
 	public void updatepass(String password,String username) throws SQLException {
 	    String updateUser = "UPDATE cse360users SET password = ? WHERE USERNAME= ?";
 	    try (PreparedStatement pstmt = connection.prepareStatement(updateUser)) {
@@ -167,6 +205,9 @@ class DatabaseHelper {
 	    }
 	    System.out.println("updated password");
 	}
+	/**********
+	 * This function helps setting the role as per the invite
+	 */
 	public void setrole(String role,String username) throws SQLException {
 	    String updateUser = "UPDATE cse360users SET role = ? WHERE username = ?";
 	    try (PreparedStatement pstmt = connection.prepareStatement(updateUser)) {
@@ -177,7 +218,10 @@ class DatabaseHelper {
 	        pstmt.executeUpdate();
 	    }
 	}
-
+	
+	/**********
+	 * This function checks if the username and password already are in the database
+	 */
 	public boolean login(String username, String password) throws SQLException {
 		String query = "SELECT * FROM cse360users WHERE username = ? AND password = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -188,6 +232,9 @@ class DatabaseHelper {
 			}
 		}
 	}
+	/**********
+	 * this gets if the user still has an active OTP
+	 */
 	public boolean helptemp(String temp) throws SQLException {
 		String query = "SELECT temp FROM cse360users WHERE temp = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -199,6 +246,9 @@ class DatabaseHelper {
 		}
 	}
 	
+	/**********
+	 * This function checks if a username is in the database
+	 */
 	public boolean doesUserExist(String username) {
 	    String query = "SELECT COUNT(*) FROM cse360users WHERE username = ?";
 	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -215,6 +265,9 @@ class DatabaseHelper {
 	    }
 	    return false; // If an error occurs, assume user doesn't exist
 	}
+	/**********
+	 * This function returns preferred name
+	 */
 	public String prefname(String username) throws SQLException {
 	    String query = "SELECT preferred FROM cse360users WHERE username = ?";
 	    String preferredName = null; 
@@ -231,7 +284,9 @@ class DatabaseHelper {
 
 	    return preferredName;
 	}
-
+	/**********
+	 * This function displays users by admin
+	 */
 	public void displayUsersByAdmin() throws SQLException{
 		String sql = "SELECT * FROM cse360users"; 
 		Statement stmt = connection.createStatement();
@@ -252,6 +307,9 @@ class DatabaseHelper {
 		} 
 	}
 	
+	/**********
+	 * This function returns all the users in the database as a list object
+	 */
 	public String displayUsers() throws SQLException{
 		String sql = "SELECT * FROM cse360users"; 
 		Statement stmt = connection.createStatement();
@@ -306,6 +364,9 @@ class DatabaseHelper {
 		return s;
 	}
 	
+	/**********
+	 * This function helps delete a user
+	 */
 	public void deleteUser(String username) throws SQLException{
 		String deleteQuery = "DELETE FROM cse360users WHERE username = ?";
 try (PreparedStatement pstmt = connection.prepareStatement(deleteQuery)) {
@@ -319,21 +380,12 @@ try (PreparedStatement pstmt = connection.prepareStatement(deleteQuery)) {
 		
 		
 		} 
-	public void deleteall() throws SQLException{
-		String deleteQuery = "DELETE FROM cse360users";
-try (PreparedStatement pstmt = connection.prepareStatement(deleteQuery)) {
-			
-			
-			
-			pstmt.executeUpdate();
-		}
-	    System.out.println("User have been deleted.");
-		
-		
-		} 
+	
 	
 
-
+	/**********
+	 * This function closes the connection between program and database
+	 */
 	public void closeConnection() {
 		try{ 
 			if(statement!=null) statement.close(); 

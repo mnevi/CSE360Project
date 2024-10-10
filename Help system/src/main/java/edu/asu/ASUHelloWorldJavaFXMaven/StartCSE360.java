@@ -1,10 +1,23 @@
 package edu.asu.ASUHelloWorldJavaFXMaven;
 
 import java.sql.SQLException;
-
+/*******
+ * <p> StartCSE360 Class </p>
+ * 
+ * <p> Description: This class is the front end for the database class and has 
+ * necessary functions to handle data </p>
+ * 
+ * 
+ * @author Tushar Sachan, Max Neville, Taj Yoshimura, Alan Lintemuth, William McLean
+ * 
+ * @version 1.0		Development Phase 1 (User authrorization)
+ * 
+ */
 
 public class StartCSE360 {
-
+	/**********
+	 * This function creates a connection between database and program
+	 */
 	private static final DatabaseHelper databaseHelper = new DatabaseHelper();
 	StartCSE360(){
 try { 
@@ -19,6 +32,9 @@ try {
 			e.printStackTrace();
 		}
 	}
+	/**********
+	 * This function checks if the database is empty
+	 */
 	public boolean check() throws SQLException {
 		
 			if (databaseHelper.isDatabaseEmpty()) {
@@ -30,7 +46,9 @@ try {
 			
 		
 	
-
+	/**********
+	 * This function checks if the user exists in the database
+	 */
 	public boolean checkuser(String username)
 	{
 		
@@ -38,7 +56,9 @@ try {
 		
 		
 	}
-
+	/**********
+	 * This function sets up the first administrator
+	 */
 	public int setupAdministrator(String username,String password,String role) throws SQLException {
 		
 		if(!databaseHelper.doesUserExist(username)) {
@@ -49,6 +69,9 @@ try {
 		return -1;
 		
 	}
+	/**********
+	 * This function sets up the new users exceot the first admin
+	 */
 public int userSetUp(String username,String password,String role) throws SQLException {
 		
 		if(!databaseHelper.doesUserExist(username)) {
@@ -61,9 +84,15 @@ public int userSetUp(String username,String password,String role) throws SQLExce
 		return -1;
 		
 	}
+/**********
+ * This function returns preferred name
+ */
 public String prefname(String username) throws SQLException {
 	return databaseHelper.prefname(username);
 }
+/**********
+ * This function deletes user from the database
+ */
 public void delete(String username) throws SQLException {
 	
 	
@@ -71,13 +100,9 @@ public void delete(String username) throws SQLException {
 	System.out.println("Delete complete");
 
 }
-public void deleteall() throws SQLException {
-	
-	
-	databaseHelper.deleteall();
-	System.out.println("Delete complete");
-
-}
+/**********
+ * This function returns the OTP from the database
+ */
 public boolean checktemp(String temp) throws SQLException {
 	
 	
@@ -85,6 +110,9 @@ public boolean checktemp(String temp) throws SQLException {
 	
 
 }
+/**********
+ * This function sets up the new password and username
+ */
 public void updatepass(String password,String username) throws SQLException {
 	
 	
@@ -92,6 +120,9 @@ public void updatepass(String password,String username) throws SQLException {
 	
 
 }
+/**********
+ * This function update username if someone has the right OTP
+ */
 public void updateuser(String username, String temp) throws SQLException {
 	
 	
@@ -100,14 +131,21 @@ public void updateuser(String username, String temp) throws SQLException {
 
 }
 
-
+/**********
+ * This function returns if the person is logging in for the first time
+ */
 public boolean findaccess(String username) throws SQLException {
 	return databaseHelper.access(username);
 }
+/**********
+ * This function returns the current role of users in database
+ */
 public String findrole(String username) throws SQLException {
 	return databaseHelper.role(username);
 }
-
+/**********
+ * This function sets all the details in the database
+ */
 public void execute(String email, String first,String middle, String last, String preferred,String username)
 {
 	try {
@@ -118,7 +156,9 @@ public void execute(String email, String first,String middle, String last, Strin
 	}
 }
 
-
+/**********
+ * This function checks is the person is authorized
+ */
 	public boolean login(String username, String password) {
 		try {
 			boolean a= databaseHelper.login(username,password);
