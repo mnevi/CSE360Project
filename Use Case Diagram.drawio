@@ -35,7 +35,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="z0iuT4_A-Pk-rhS7tFmT-34" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="z0iuT4_A-Pk-rhS7tFmT-8">
-          <mxGeometry x="150" y="110" width="60" height="30" as="geometry" />
+          <mxGeometry x="250" y="120" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="z0iuT4_A-Pk-rhS7tFmT-35" value="Perform Administrative Duties" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="z0iuT4_A-Pk-rhS7tFmT-8">
           <mxGeometry x="360" y="270" width="150" height="90" as="geometry" />
@@ -73,6 +73,18 @@
         <mxCell id="z0iuT4_A-Pk-rhS7tFmT-42" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="z0iuT4_A-Pk-rhS7tFmT-8">
           <mxGeometry x="510" y="340" width="60" height="30" as="geometry" />
         </mxCell>
+        <mxCell id="z0iuT4_A-Pk-rhS7tFmT-45" value="" style="endArrow=none;html=1;rounded=0;entryX=0.012;entryY=0.612;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="z0iuT4_A-Pk-rhS7tFmT-8" target="z0iuT4_A-Pk-rhS7tFmT-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-22" y="385" as="sourcePoint" />
+            <mxPoint x="240" y="265" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z0iuT4_A-Pk-rhS7tFmT-47" value="" style="endArrow=none;html=1;rounded=0;entryX=0.229;entryY=0.967;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="z0iuT4_A-Pk-rhS7tFmT-8" target="z0iuT4_A-Pk-rhS7tFmT-31">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-12" y="390" as="sourcePoint" />
+            <mxPoint x="250" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="z0iuT4_A-Pk-rhS7tFmT-9" value="Admin" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="790" y="300" width="30" height="60" as="geometry" />
         </mxCell>
@@ -81,6 +93,24 @@
         </mxCell>
         <mxCell id="z0iuT4_A-Pk-rhS7tFmT-17" value="Student" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
           <mxGeometry x="80" y="355" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="z0iuT4_A-Pk-rhS7tFmT-44" value="" style="endArrow=none;html=1;rounded=0;entryX=0.019;entryY=0.623;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="z0iuT4_A-Pk-rhS7tFmT-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="130" y="220" as="sourcePoint" />
+            <mxPoint x="180" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z0iuT4_A-Pk-rhS7tFmT-46" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="z0iuT4_A-Pk-rhS7tFmT-31">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="230" as="sourcePoint" />
+            <mxPoint x="412" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z0iuT4_A-Pk-rhS7tFmT-48" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="z0iuT4_A-Pk-rhS7tFmT-35">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="528" y="410" as="sourcePoint" />
+            <mxPoint x="780" y="335" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
