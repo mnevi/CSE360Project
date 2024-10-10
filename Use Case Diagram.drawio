@@ -106,6 +106,12 @@
         <mxCell id="wDu6coxrCI0hIiS3W681-33" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="wDu6coxrCI0hIiS3W681-1">
           <mxGeometry x="350" y="350" width="60" height="30" as="geometry" />
         </mxCell>
+        <mxCell id="wDu6coxrCI0hIiS3W681-36" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="wDu6coxrCI0hIiS3W681-1" source="wDu6coxrCI0hIiS3W681-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="510" y="270" as="sourcePoint" />
+            <mxPoint x="620" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="wDu6coxrCI0hIiS3W681-21" value="Admin" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="820" y="330" width="30" height="60" as="geometry" />
         </mxCell>
@@ -138,6 +144,9 @@
             <mxPoint x="470" y="520" as="sourcePoint" />
             <mxPoint x="744" y="743" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="wDu6coxrCI0hIiS3W681-34" value="User Testbed" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="425" y="10" width="110" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
