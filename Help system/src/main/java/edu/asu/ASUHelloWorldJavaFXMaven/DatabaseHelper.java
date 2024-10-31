@@ -65,6 +65,7 @@ class DatabaseHelper {
 				
 		statement.execute(userTable);
 	}
+	
 
 
 	// Check if the database is empty

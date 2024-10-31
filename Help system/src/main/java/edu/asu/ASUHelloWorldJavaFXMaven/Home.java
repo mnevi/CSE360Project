@@ -1,7 +1,6 @@
 package edu.asu.ASUHelloWorldJavaFXMaven;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;

@@ -28,6 +28,7 @@ public class roles extends Application{
 	String roleuser="";
 	StartCSE360 helper = new StartCSE360();
 	Admin adminhelper=new Admin();
+	articles articlehelp=new articles();
 	
 	/**********
 	 * This is the start method that is called once the application has been loaded into memory and
@@ -182,6 +183,7 @@ public class roles extends Application{
 		Button invite=new Button("Invite Users");
 		Button b=new Button("Log out");
 		Button reset=new Button("Reset A user");
+		Button article=new Button("Article");
 		
 		v.getChildren().add(lb);
 		v.getChildren().add(invite);
@@ -190,6 +192,7 @@ public class roles extends Application{
 		v.getChildren().add(list);
 		v.getChildren().add(removeroles);
 		v.getChildren().add(reset);
+		v.getChildren().add(article);
 		v.getChildren().add(l3);
 		
 		cp.setCenter(v);
@@ -240,6 +243,16 @@ public class roles extends Application{
             	logout(primaryStage);
             }
         });
+		article.setOnAction(new EventHandler<>() { 
+            public void handle(ActionEvent event) {
+            	try {
+					articlehelp.start(new Stage());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        });
 		removeroles.setOnAction(new EventHandler<>() { 
             public void handle(ActionEvent event) {
             	adminhelper.removeroles();
@@ -279,6 +292,7 @@ public class roles extends Application{
 		vb.getChildren().add(b1);
 		vb.getChildren().add(b2);
 		cp.setCenter(vb);
+		//opens the instructor view
 		b1.setOnAction(new EventHandler<>() { 
             public void handle(ActionEvent event) {
             	cp.getChildren().clear();
@@ -286,6 +300,7 @@ public class roles extends Application{
             	
             }
         });
+		//opens the student view
 		b2.setOnAction(new EventHandler<>() { 
             public void handle(ActionEvent event) {
             	cp.getChildren().clear();
@@ -302,12 +317,27 @@ public class roles extends Application{
 	public void instructor(Stage primaryStage) {
 		Label lb=new Label("Welcome to Instructor role");
 		Button b=new Button("Log out");
+		Button article=new Button("Article");
 		cp.setCenter(lb);
+		cp.setLeft(article);
 		cp.setRight(b);
+		//logs out the instructor user
 		b.setOnAction(new EventHandler<>() { 
             public void handle(ActionEvent event) {
             	primaryStage.close();
             	
+            }
+        });
+		
+		//enables instructor to use manage articles
+		article.setOnAction(new EventHandler<>() { 
+            public void handle(ActionEvent event) {
+            	try {
+					articlehelp.start(new Stage());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 		
