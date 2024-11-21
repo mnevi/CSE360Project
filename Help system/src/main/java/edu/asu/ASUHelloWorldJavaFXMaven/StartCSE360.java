@@ -1,5 +1,7 @@
 package edu.asu.ASUHelloWorldJavaFXMaven;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 /*******
  * <p> StartCSE360 Class </p>
@@ -18,20 +20,29 @@ public class StartCSE360 {
 	/**********
 	 * This function creates a connection between database and program
 	 */
-	private static final DatabaseHelper databaseHelper = new DatabaseHelper();
-	StartCSE360(){
-try { 
-			
-			databaseHelper.connectToDatabase();  // Connect to the database
+    private static Connection mockConnection;
 
-			// Check if the database is empty (no users registered)
-			
-			
-		} catch (SQLException e) {
-			System.err.println("Database error: " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
+    // Static block to initialize mockConnection
+    static {
+        try {
+            mockConnection = DriverManager.getConnection("jdbc:h2:mem:testdb", "sa", "");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (logging, rethrow, etc.)
+        }
+    }
+
+    private static final DatabaseHelper databaseHelper = new DatabaseHelper(mockConnection);
+
+    public StartCSE360() {
+        try {
+            databaseHelper.connectToDatabase();  // Connect to the database
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+	
 	/**********
 	 * This function checks if the database is empty
 	 */
