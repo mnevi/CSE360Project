@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Base64;
 
 
 class DatabaseHelper {
@@ -33,6 +34,10 @@ class DatabaseHelper {
 	private Statement statement = null; 
 	//	PreparedStatement pstmt
 
+    public DatabaseHelper(Connection connection) {
+        this.connection = connection;
+    }
+    
 	public void connectToDatabase() throws SQLException {
 		try {
 			Class.forName(JDBC_DRIVER); // Load the JDBC driver
@@ -66,8 +71,6 @@ class DatabaseHelper {
 		statement.execute(userTable);
 	}
 	
-
-
 	// Check if the database is empty
 	public boolean isDatabaseEmpty() throws SQLException {
 		String query = "SELECT COUNT(*) AS count FROM cse360users";
@@ -119,13 +122,18 @@ class DatabaseHelper {
 	}
 	
 	/**********
-	 * This function registers a new user with username, passeord and role
+	 * This function registers a new user with username, password and role
+	 *        
 	 */
 	public void register(String username, String password, String role) throws SQLException {
-		String insertUser = "INSERT INTO cse360users (password, role, username, access) VALUES (?, ?, ?, false)";
+    	String encryptedpassword = Base64.getEncoder().encodeToString(password.getBytes());
+    	String insertUser = "INSERT INTO cse360users (password, role, username, access) VALUES (?, ?, ?, false)";
+		
+    	System.out.println("encrypted Password: " + encryptedpassword); // Debugging output
+
 		try (PreparedStatement pstmt = connection.prepareStatement(insertUser)) {
 			
-			pstmt.setString(1, password);
+			pstmt.setString(1, encryptedpassword);
 			pstmt.setString(2, role);
 			pstmt.setString(3, username);
 			
@@ -197,8 +205,11 @@ class DatabaseHelper {
 	 */
 	public void updatepass(String password,String username) throws SQLException {
 	    String updateUser = "UPDATE cse360users SET password = ? WHERE USERNAME= ?";
+	    String encryptedpassword = Base64.getEncoder().encodeToString(password.getBytes());
+
+	    
 	    try (PreparedStatement pstmt = connection.prepareStatement(updateUser)) {
-	        pstmt.setString(1, password);
+	        pstmt.setString(1, encryptedpassword);
 
 	        pstmt.setString(2, username);
 	        
@@ -225,9 +236,12 @@ class DatabaseHelper {
 	 */
 	public boolean login(String username, String password) throws SQLException {
 		String query = "SELECT * FROM cse360users WHERE username = ? AND password = ?";
+		String encryptedpassword = Base64.getEncoder().encodeToString(password.getBytes());	
+    	System.out.println("encrypted Password: " + encryptedpassword); // Debugging output
+		
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 			pstmt.setString(1, username);
-			pstmt.setString(2, password);
+			pstmt.setString(2, encryptedpassword);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				return rs.next();
 			}
