@@ -7,6 +7,7 @@ import java.util.Random;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -29,6 +30,8 @@ public class roles extends Application{
 	StartCSE360 helper = new StartCSE360();
 	Admin adminhelper=new Admin();
 	articles articlehelp=new articles();
+	student studenthelp=new student();
+	articlehelper help=new articlehelper();
 	
 	/**********
 	 * This is the start method that is called once the application has been loaded into memory and
@@ -184,6 +187,7 @@ public class roles extends Application{
 		Button b=new Button("Log out");
 		Button reset=new Button("Reset A user");
 		Button article=new Button("Article");
+
 		
 		v.getChildren().add(lb);
 		v.getChildren().add(invite);
@@ -315,17 +319,35 @@ public class roles extends Application{
 	 * This function handles if the user has instructor as roles
 	 */
 	public void instructor(Stage primaryStage) {
+		VBox v=new VBox(10);
 		Label lb=new Label("Welcome to Instructor role");
 		Button b=new Button("Log out");
 		Button article=new Button("Article");
-		cp.setCenter(lb);
-		cp.setLeft(article);
+		Button viewstudentmessage=new Button("View all student message");
+		Button creategroup=new Button("Create Group");
+		v.getChildren().addAll(lb,article,creategroup,viewstudentmessage);
+		cp.setCenter(v);
 		cp.setRight(b);
 		//logs out the instructor user
 		b.setOnAction(new EventHandler<>() { 
             public void handle(ActionEvent event) {
             	primaryStage.close();
             	
+            }
+        });
+		
+		creategroup.setOnAction(new EventHandler<>() { 
+            public void handle(ActionEvent event) {
+            	help.work=9;
+            	try {
+            		help.start(new Stage());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 		
@@ -340,6 +362,20 @@ public class roles extends Application{
 				}
             }
         });
+		viewstudentmessage.setOnAction(new EventHandler<>() { 
+            public void handle(ActionEvent event) {
+            	studenthelp.work=2;
+            	try {
+					studenthelp.start(new Stage());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        });
 		
 		
 	}
@@ -347,13 +383,59 @@ public class roles extends Application{
 	 * This function handles if the user has student as roles
 	 */
 	public void student(Stage primaryStage) {
+		VBox v = new VBox();
+		v.setAlignment(Pos.CENTER);
+	    v.setSpacing(10);
 		Label lb=new Label("Welcome to Student role");
 		Button b=new Button("Log out");
-		cp.setCenter(lb);
+		Button b2=new Button("Send Message");
+		Button b3=new Button("View all Messages");
+		Button b4=new Button("List Articles");
+		v.getChildren().add(lb);
+		v.getChildren().add(b2);
+		v.getChildren().add(b3);
+		v.getChildren().add(b4);
+		cp.setCenter(v);
 		cp.setRight(b);
 		b.setOnAction(new EventHandler<>() { 
             public void handle(ActionEvent event) {
             	primaryStage.close();
+            	
+            }
+        });
+		b2.setOnAction(new EventHandler<>() { 
+            public void handle(ActionEvent event) {
+            	studenthelp.work=1;
+            	try {
+					studenthelp.start(new Stage());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	
+            }
+        });
+		b3.setOnAction(new EventHandler<>() { 
+            public void handle(ActionEvent event) {
+            	studenthelp.work=2;
+            	try {
+					studenthelp.start(new Stage());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	
+            }
+        });
+		b4.setOnAction(new EventHandler<>() { 
+            public void handle(ActionEvent event) {
+            	studenthelp.work=3;
+            	try {
+					studenthelp.start(new Stage());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             	
             }
         });

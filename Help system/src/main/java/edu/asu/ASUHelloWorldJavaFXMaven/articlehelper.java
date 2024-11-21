@@ -8,8 +8,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -65,6 +67,12 @@ public class articlehelper extends Application {
         case 7:
         	restore(primaryStage);
         	break;
+        case 8:
+        	modify(primaryStage);
+        	break;
+        case 9:
+        	create(primaryStage);
+        	break;
         default:
         	break;
         }
@@ -78,7 +86,219 @@ public class articlehelper extends Application {
         primaryStage.show();
     }
     
-    /**********
+    private void create(Stage primaryStage) {
+    	v = new VBox(10); // Add spacing between buttons
+        v.setAlignment(Pos.CENTER); // Center-align buttons in the VBox
+        Label l=new Label("Choose if the article belongs to special group");
+        RadioButton rb1 = new RadioButton("Yes");
+        ToggleGroup group = new ToggleGroup();
+        rb1.setToggleGroup(group);
+        
+        RadioButton rb2 = new RadioButton("No");
+        rb2.setToggleGroup(group);
+        Label l1=new Label("Create group name");
+    	TextField t1=new TextField();
+    	Label l2=new Label("Enter title of articles to be in special group (seperated by comma)");
+    	TextField t2=new TextField();
+    	Label l3=new Label("Enter your username");
+    	TextField t3=new TextField();
+    	Label l4=new Label("Enter group names that have access to the title");
+    	TextField t4=new TextField();
+    	t4.setDisable(false);
+    	Button b=new Button("Submit");
+    	v.getChildren().addAll(l,rb1,rb2,l1, t1,l2,t2,l3,t3,l4,t4, b);
+    	b.setOnAction(new EventHandler<>() {
+    		boolean b=false;
+            public void handle(ActionEvent event) {
+            	if (group.getSelectedToggle() != null) {
+                    RadioButton selectedRadio = (RadioButton) group.getSelectedToggle();
+                    System.out.println(selectedRadio.getText());
+                    if(selectedRadio.getText().equals("Yes"))
+                    	b=true;
+                    else if(selectedRadio.getText().equals("No"))
+                    	b=false;
+                    try {
+						helparticle.createGroup(t1.getText(),t2.getText(),b,t3.getText(),t4.getText());
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                } 
+            	else {
+                    System.out.println("Select a radiobutton");
+                }
+            	
+            	
+            
+            }
+        });
+    	rb1.setOnAction(e -> t4.setDisable(false));
+    	rb2.setOnAction(e -> t4.setDisable(true));
+	}
+
+	private void modify(Stage primaryStage) {
+    	v = new VBox(10); // Add spacing between buttons
+        v.setAlignment(Pos.CENTER); // Center-align buttons in the VBox
+        Label l1=new Label("Enter group name");
+        Label l2=new Label();
+    	TextField t1=new TextField();
+    	Label l3=new Label("Enter your username");
+    	TextField t2=new TextField();
+    	Button b=new Button("Submit");
+    	v.getChildren().addAll(l1, t1,l3,t2, b,l2);
+    	b.setOnAction(new EventHandler<>() {
+            public void handle(ActionEvent event) {
+            	try {
+					Boolean b=helparticle.groupExists(t1.getText());
+					if(b==true)
+					{
+						checkspecial(t1.getText(),l2,t2.getText(),v);
+					}
+						
+					else
+						l2.setText("Group does not exist");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+
+			
+        });
+	}
+	
+	private void checkspecial(String check,Label l2,String t2,VBox v) throws SQLException {
+		Boolean b=helparticle.isSpecialGroup(check);
+		Boolean c=false;
+		if(b==false)
+		{
+			v.getChildren().clear();
+			Label l=new Label("Enter the name of articles to be added/deleted");
+			TextField t1=new TextField();
+			Label ll=new Label("Enter the name of articles to be added/deleted");
+			Button b1=new Button("Add article");
+			Button b2=new Button("Remove article");
+			//Button b3=new Button("Add article");
+			v.getChildren().addAll(t1,b1,b2,ll);
+			b1.setOnAction(new EventHandler<>() {
+	            public void handle(ActionEvent event) {
+	            	try {
+						Boolean b=helparticle.checkInArticles(check, t1.getText());
+						if(b==false) {
+							helparticle.addArticleToGroup(check, t1.getText());}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        }});
+			b2.setOnAction(new EventHandler<>() {
+	            public void handle(ActionEvent event) {
+	            	try {
+						Boolean b=helparticle.checkInArticles(check, t1.getText());
+						if(b==true) {
+							helparticle.removeArticleFromGroup(check, t1.getText());}
+						else
+							ll.setText("Article not found");
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        }});
+		}
+		else
+		{
+			c=helparticle.checkInAdmin(check, t2);
+	
+		if(c==true)
+		{
+			v.getChildren().clear();
+			
+			Label l=new Label("Enter the name of articles to be added/deleted");
+			TextField t1=new TextField();
+			Label ll=new Label();
+			Button b1=new Button("Add article");
+			Button b2=new Button("Remove article");
+			Label lll=new Label("Enter the name of Users to be added/deleted");
+			TextField t21=new TextField();
+			Label llll=new Label("Enter the name of Admins to be added/deleted");
+			TextField t212=new TextField();
+			Button b3=new Button("Add user");
+			Button b4=new Button("Remove user");
+			Button b5=new Button("Add group admins to current group");
+			Button b6=new Button("Remove group admins from current group");
+			//Button b3=new Button("Add article");
+			v.getChildren().addAll(l,t1,b1,b2,lll,t21,b3,b4,llll,t212,b5,b6,ll);
+			b1.setOnAction(new EventHandler<>() {
+	            public void handle(ActionEvent event) {
+	            	try {
+						Boolean b=helparticle.checkInArticles(check, t1.getText());
+						if(b==false) {
+							helparticle.addArticleToGroup(check, t1.getText());}
+						
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        }});
+			b2.setOnAction(new EventHandler<>() {
+	            public void handle(ActionEvent event) {
+	            	try {
+						Boolean b=helparticle.checkInArticles(check, t1.getText());
+						if(b==true) {
+							helparticle.removeArticleFromGroup(check, t1.getText());}
+						else
+							ll.setText("Article not found");
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        }});
+			b3.setOnAction(new EventHandler<>() {
+	            public void handle(ActionEvent event) {
+	            	try {
+						helparticle.addAccessToGroup(check, t21.getText());
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        }});
+			b4.setOnAction(new EventHandler<>() {
+	            public void handle(ActionEvent event) {
+	            	try {
+						helparticle.removeAccessFromGroup(check, t21.getText());
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        }});
+			b5.setOnAction(new EventHandler<>() {
+	            public void handle(ActionEvent event) {
+	            	try {
+						helparticle.addAdminToGroup(check, t212.getText());
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        }});
+			b6.setOnAction(new EventHandler<>() {
+	            public void handle(ActionEvent event) {
+	            	try {
+						helparticle.removeAdminFromGroup(check, t212.getText());
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	        }});
+		}
+		
+		else
+		{
+			l2.setText("Group needs special permissions and "+t2+" doesn't have them");
+		}
+		}
+	}
+
+	/**********
 	 * This function helps by prompting for article details and adding them to 
 	 * the database by database helper object
 	 */
@@ -103,13 +323,13 @@ public class articlehelper extends Application {
     	Label l7=new Label("Enter the groups for the article (separated by a comma): ");
     	TextField t7=new TextField();
     	Button btn = new Button("Submit");
-    	v.getChildren().addAll(ln, l1, t1, l2, t2, l21, t21, l3, t3, l4, t4, l5, t5, l6, t6, l7, t7, btn);
+    	v.getChildren().addAll(ln, l1, t1, l2, t2, l21, t21, l3, t3, l4, t4, l5, t5, l6, t6, btn);
     	
     	//calls the back end database to add article to memory
     	btn.setOnAction(new EventHandler<>() {
             public void handle(ActionEvent event) {
             	try {
-					helparticle.addArticle(t1.getText(),t2.getText(),t21.getText(),t3.getText(),t4.getText(), t5.getText(),t6.getText(),t7.getText());
+					helparticle.addArticle(t1.getText(),t2.getText(),t21.getText(),t3.getText(),t4.getText(), t5.getText(),t6.getText(),"");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -303,7 +523,12 @@ public class articlehelper extends Application {
     	v.getChildren().addAll( l1,t1,l2,t2,b);
     	b.setOnAction(new EventHandler<>() {
             public void handle(ActionEvent event) {
-            	helparticle.backupGroupedArticles(t1.getText(),t2.getText());
+            	try {
+					helparticle.backupGroupedArticles(t1.getText(),t2.getText());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             	primary.close();
             }
         });

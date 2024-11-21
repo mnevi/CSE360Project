@@ -17,7 +17,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Base64;
 
 
 class DatabaseHelper {
@@ -120,18 +119,13 @@ class DatabaseHelper {
 	}
 	
 	/**********
-	 * This function registers a new user with username, password and role
-	 *        
+	 * This function registers a new user with username, passeord and role
 	 */
 	public void register(String username, String password, String role) throws SQLException {
-    	String encryptedpassword = Base64.getEncoder().encodeToString(password.getBytes());
-    	String insertUser = "INSERT INTO cse360users (password, role, username, access) VALUES (?, ?, ?, false)";
-		
-    	System.out.println("encrypted Password: " + encryptedpassword); // Debugging output
-
+		String insertUser = "INSERT INTO cse360users (password, role, username, access) VALUES (?, ?, ?, false)";
 		try (PreparedStatement pstmt = connection.prepareStatement(insertUser)) {
 			
-			pstmt.setString(1, encryptedpassword);
+			pstmt.setString(1, password);
 			pstmt.setString(2, role);
 			pstmt.setString(3, username);
 			
@@ -203,11 +197,8 @@ class DatabaseHelper {
 	 */
 	public void updatepass(String password,String username) throws SQLException {
 	    String updateUser = "UPDATE cse360users SET password = ? WHERE USERNAME= ?";
-	    String encryptedpassword = Base64.getEncoder().encodeToString(password.getBytes());
-
-	    
 	    try (PreparedStatement pstmt = connection.prepareStatement(updateUser)) {
-	        pstmt.setString(1, encryptedpassword);
+	        pstmt.setString(1, password);
 
 	        pstmt.setString(2, username);
 	        
@@ -234,13 +225,9 @@ class DatabaseHelper {
 	 */
 	public boolean login(String username, String password) throws SQLException {
 		String query = "SELECT * FROM cse360users WHERE username = ? AND password = ?";
-		String encryptedpassword = Base64.getEncoder().encodeToString(password.getBytes());
-//		pstmt.setString(1, encryptedpassword);	
-    	System.out.println("encrypted Password: " + encryptedpassword); // Debugging output
-		
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 			pstmt.setString(1, username);
-			pstmt.setString(2, encryptedpassword);
+			pstmt.setString(2, password);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				return rs.next();
 			}

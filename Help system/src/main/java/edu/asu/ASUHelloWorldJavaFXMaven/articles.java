@@ -42,7 +42,7 @@ public class articles extends Application {
         root.getChildren().add(v); // Add VBox with buttons to the root VBox
 
         StackPane stackPane = new StackPane(root); // StackPane to center root VBox in the scene
-        Scene scene = new Scene(stackPane, 400, 250);
+        Scene scene = new Scene(stackPane, 400, 400);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Articles");
@@ -61,9 +61,10 @@ public class articles extends Application {
         Button b4 = new Button("Search article");
         Button b2 = new Button("Remove article");
         Button b3 = new Button("Update article");
+		Button modifygroup=new Button("Modify Groups");
         Button b5 = new Button("Backup");
         Button b6 = new Button("Restore");
-        v.getChildren().addAll(b1, b12, b4, b2, b3, b5, b6); // Add all buttons to VBox v
+        v.getChildren().addAll(b1, b12, b4, b2, b3,modifygroup, b5, b6); // Add all buttons to VBox v
         
         //creating a new article
         b1.setOnAction(new EventHandler<>() {
@@ -116,7 +117,17 @@ public class articles extends Application {
 				}
             }
         });
-        
+        modifygroup.setOnAction(new EventHandler<>() {
+            public void handle(ActionEvent event) {
+            	help.work=8;
+            	try {
+					help.start(new Stage());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        });
         //search article by groups or id
         b4.setOnAction(new EventHandler<>() {
             public void handle(ActionEvent event) {
